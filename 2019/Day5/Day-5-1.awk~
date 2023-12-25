@@ -1,0 +1,89 @@
+# Choose field separator as commas
+BEGIN{
+    FS= ","
+}
+
+# Read the input code
+{
+    #The number of fields determines the number of parameters
+    N=NF;
+    #Store each parameter in the array code
+    for (i=0;i<N;i++){
+	j=i+1;
+	code[i]=$j;
+    }
+}
+
+END{
+    #The first parameter is called a noun
+    code[1]=noun;
+    #The second parameter is called a verb
+    code[2]=verb;
+    #pos is the current position in the code
+    pos=0;
+    #op is the operation at this position
+    op=code[pos];
+
+    #op=99 signals the end of the code. As long as it is not reached,
+    #move forward depending on the value of op
+    while(op!=99){
+	#operation 1 is the addition of parameters stored at the two
+	#positions following pos, and stored at the position indicated
+	#by the third parameter after pos
+	if(op==1){
+	    #store the number to be added in p1 & p2
+	    p1=code[pos+1];
+	    p2=code[pos+2];
+	    #store the output position
+	    posoutput=code[pos+3];
+	    #store the result of the addition at the correct position
+	    code[posoutput]=code[p1]+code[p2];
+	    #Move forward 4 position in the code
+	    pos+=4;
+	    #read the next operation
+	    op=code[pos];
+	}
+	#operation 2 is the multiplication of parameters stored at the
+	#two positions following pos, and stored at the position
+	#indicated by the third parameter after pos
+	else if(op==2){
+	    #store the number to be added in p1 & p2
+	    p1=code[pos+1];
+	    p2=code[pos+2];
+	    #store the output position
+	    posoutput=code[pos+3];
+	    #store the result of the addition at the correct position
+	    code[posoutput]=(code[p1])*(code[p2]);
+	    #Move forward 4 position in the code
+	    pos+=4;
+	    #read the next operation
+	    op=code[pos];
+	}
+	#operation 3 stores the input at the position indicated by the
+	#parameters which occupies the following position in the code
+	else if(op==3){
+	    #Store the position where the input should be stored
+	    p1=code[pos+1];
+	    #Store the input
+	    code[p1]=input;
+	    #Go two steps forward in the code
+	    pos+=2;
+	    #Read the next operation
+	    op=code[pos];
+	}
+	#operation 4 outputs the value stored at the position
+	#indicated by the parameters which occupies the following
+	#position in the code
+	else if(op==4){
+	    #Store the position where the input is
+	    p1=code[pos+1];
+	    # print it out
+	    print p1;
+	    # Move two steps forward
+	    pos+=2;
+	    op=code[pos];
+	}
+    }
+
+}
+

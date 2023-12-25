@@ -1,0 +1,3 @@
+#!/bin/bash
+
+awk  -f ./Day-7-1.awk < Input-Day-7-1.txt;
